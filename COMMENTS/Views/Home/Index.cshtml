@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <div>
+            @await Component.InvokeAsync("ListComments", "/")
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.min.js"></script>
+        <div id="comment-app">
+            <div>
+                <div class="col-2">
+                    User
+                </div>
+                <div class="col-10">
+                    <input v-model="comment.Name" />
+                </div>
+            </div>
+            <div>
+                <div class="col-2">
+                    Comment
+                </div>
+                <div class="col-10">
+                    <input v-model="comment.Comment" />
+                </div>
+            </div>
+            <button v-on:click="postComment()">Post</button>
+        </div>
+
+        <script>
+        new Vue({
+            el: '#comment-app',
+            data: {
+                comment: @Html.Raw(ViewBag.Comment)
+            },
+            methods: {
+                postComment: function () {
+                    alert("posting...");
+                    $.post('@Url.Action("PostComment")', this.comment, function () { window.location.href = window.location.href; });
+                }
+            }
+        })
+        </script>
+    </div>

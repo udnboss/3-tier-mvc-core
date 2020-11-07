@@ -1,0 +1,36 @@
+﻿@model List<VComment>
+@*<ul>
+        @foreach (var c in Model)
+        {
+            <li>
+                @await Component.InvokeAsync("ViewComment", c)
+                @if (c.Children.Count > 0)
+                {
+                    @await Component.InvokeAsync("ListComments", c.Children)
+                }
+            </li>
+        }
+    </ul>*@
+
+@{Func<IEnumerable<VComment>, Microsoft.AspNetCore.Html.IHtmlContent> DisplayTree = null;}
+
+@{
+    DisplayTree = @<text>@{
+            <ul>
+                @foreach (var c in item as IEnumerable<VComment>)
+                {
+                    <li>
+                        @await Component.InvokeAsync("ViewComment", c)
+                        @if (c.Children.Count > 0)
+                        {
+                            @DisplayTree(c.Children)
+                        }
+                    </li>
+                }
+            </ul>
+    }</text>;
+}
+
+
+
+@DisplayTree(Model)
